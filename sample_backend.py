@@ -38,7 +38,7 @@ users = {
    ]
 }
 
-@app.route('/users', methods=['GET', 'POST'])
+@app.route('/users', methods=['GET', 'POST', 'DELETE'])
 def get_users():
    if request.method == 'GET':
    	search_username = request.args.get('name')
@@ -55,6 +55,16 @@ def get_users():
    	resp = jsonify(success=True)
    	#resp.status_code = 200
    	return resp
+   elif request.method == 'DELETE':
+   	userToDel = request.get_json()
+   	for user in users['users_list']:
+   		if user["name"] == userToDel["name"]:
+   			users['users_list'].remove(user)
+   			resp = jsonify(success=True)
+   			return resp
+   	return jsonify(success=False)		
+
+
 
 @app.route('/users/<id>')
 def get_user(id):
