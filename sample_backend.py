@@ -1,4 +1,5 @@
-import uuid
+import random
+import string
 
 from flask import Flask
 from flask import request
@@ -62,9 +63,10 @@ def get_users():
    	return users
    elif request.method == 'POST':
    	userToAdd = request.get_json()
-   	userToAdd["id"] = uuid.uuid4()
+   	userToAdd["id"] = ''.join([random.choice(string.ascii_letters 
+            + string.digits) for n in range(6)])
    	users['users_list'].append(userToAdd)
-   	resp = jsonify(success=True)
+   	resp = jsonify(userToAdd)
    	resp.status_code = 201
    	return resp
    elif request.method == 'DELETE':
@@ -72,7 +74,8 @@ def get_users():
    	for user in users['users_list']:
    		if user["name"] == userToDel["name"]:
    			users['users_list'].remove(user)
-   			resp = jsonify(success=True)
+   			resp = jsonify(users['users_list'])
+   			resp.status_code = 201
    			return resp
    	return jsonify(success=False)		
 
