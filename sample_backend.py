@@ -75,7 +75,7 @@ def get_users():
    		if user["name"] == userToDel["name"]:
    			users['users_list'].remove(user)
    			resp = jsonify(users['users_list'])
-   			resp.status_code = 201
+   			resp.status_code = 200
    			return resp
    	return jsonify(success=False)		
 
