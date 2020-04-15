@@ -1,3 +1,5 @@
+import uuid
+
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -60,6 +62,7 @@ def get_users():
    	return users
    elif request.method == 'POST':
    	userToAdd = request.get_json()
+   	userToAdd["id"] = uuid.uuid4()
    	users['users_list'].append(userToAdd)
    	resp = jsonify(success=True)
    	resp.status_code = 201
