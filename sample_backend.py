@@ -43,6 +43,12 @@ users = {
    ]
 }
 
+def make_id():
+	nums = str(random.randint(100, 999))
+	letters = ''.join(random.choice(string.ascii_lowercase) for c in range(3))
+	return letters + nums
+
+
 @app.route('/users', methods=['GET', 'POST'])
 def get_users():
    if request.method == 'GET':
@@ -63,8 +69,7 @@ def get_users():
    	return users
    elif request.method == 'POST':
    	userToAdd = request.get_json()
-   	userToAdd["id"] = ''.join([random.choice(string.ascii_letters 
-            + string.digits) for n in range(6)])
+   	userToAdd["id"] = make_id()
    	users['users_list'].append(userToAdd)
    	resp = jsonify(userToAdd)
    	resp.status_code = 201
