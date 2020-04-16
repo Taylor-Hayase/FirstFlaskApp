@@ -43,7 +43,7 @@ users = {
    ]
 }
 
-@app.route('/users', methods=['GET', 'POST', 'DELETE'])
+@app.route('/users', methods=['GET', 'POST'])
 def get_users():
    if request.method == 'GET':
    	search_username = request.args.get('name')
@@ -69,23 +69,22 @@ def get_users():
    	resp = jsonify(userToAdd)
    	resp.status_code = 201
    	return resp
-   elif request.method == 'DELETE':
-   	userToDel = request.get_json()
-   	for user in users['users_list']:
-   		if user["name"] == userToDel["name"]:
-   			users['users_list'].remove(user)
-   			resp = jsonify(users['users_list'])
-   			resp.status_code = 200
-   			return resp
-   	return jsonify(success=False)		
 
 
 
-@app.route('/users/<id>')
+@app.route('/users/<id>', methods=['GET', 'DELETE'])
 def get_user(id):
-   if id :
+   if request.method == 'GET':
       for user in users['users_list']:
         if user['id'] == id:
            return user
       return ({})
+   elif request.method == 'DELETE':
+   	for user in users['users_list']:
+   		if user['id'] == id:
+   			users['users_list'].remove(user)
+   			resp = jsonify(success=True)
+   			resp.status_code = 200
+   			return resp
+   	return jsonify(success=False)		
    return users
