@@ -72,7 +72,10 @@ def get_users():
    	userToAdd["id"] = make_id()
    	users['users_list'].append(userToAdd)
    	resp = jsonify(userToAdd)
-   	resp.status_code = 201
+   	if userToAdd in users['users_list']:
+   		resp.status_code = 201
+   	else:
+   		resp.status_code = 400
    	return resp
 
 
@@ -91,5 +94,7 @@ def get_user(id):
    			resp = jsonify(success=True)
    			resp.status_code = 200
    			return resp
-   	return jsonify(success=False)		
+   	resp = jsonify(success=False)
+   	resp.status_code = 400
+   	return resp	
    return users
